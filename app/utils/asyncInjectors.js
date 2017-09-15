@@ -3,15 +3,14 @@ import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+
 import invariant from 'invariant';
 import warning from 'warning';
+import createReducer from 'reducers';
 
-import createReducer from '../reducers';
-
-
-/*
-* Validate the shape of redux store
-*/
+/**
+ * Validate the shape of redux store
+ */
 export function checkStore(store) {
   const shape = {
     dispatch: isFunction,
@@ -27,10 +26,9 @@ export function checkStore(store) {
   );
 }
 
-
-/*
-* Inject an asynchronously loaded reducer
-*/
+/**
+ * Inject an asynchronously loaded reducer
+ */
 export function injectAsyncReducer(store, isValid) {
   return function injectReducer(name, asyncReducer) {
     if (!isValid) checkStore(store);
@@ -47,10 +45,9 @@ export function injectAsyncReducer(store, isValid) {
   };
 }
 
-
-/*
-* Inject an asynchronously loaded saga
-*/
+/**
+ * Inject an asynchronously loaded saga
+ */
 export function injectAsyncSagas(store, isValid) {
   return function injectSagas(sagas) {
     if (!isValid) checkStore(store);
@@ -65,14 +62,21 @@ export function injectAsyncSagas(store, isValid) {
       '(app/utils...) injectAsyncSagas: Received an empty `sagas` array'
     );
 
-    sagas.map(store.runSaga);
+    /*
+    * Only (re)inject sagas that are not daemons
+    */
+    sagas.forEach((saga) => {
+      if (!(saga.isDaemon === true && Reflect.has(store.asyncSagas, saga))) {
+        store.asyncSagas[saga] = true; // eslint-disable-line no-param-reassign
+        store.runSaga(saga);
+      }
+    });
   };
 }
 
-
-/*
-* Helper for creating injectors
-*/
+/**
+ * Helper for creating injectors
+ */
 export function getAsyncInjectors(store) {
   checkStore(store);
 
