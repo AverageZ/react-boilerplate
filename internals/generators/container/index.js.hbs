@@ -14,7 +14,6 @@ import Helmet from 'components/Helmet';
 import { FormattedMessage } from 'react-intl';
 {{/if}}
 {{#if wantActionsAndReducer}}
-import { createStructuredSelector } from 'reselect';
 import makeSelect{{properCase name}} from './selectors';
 {{/if}}
 {{#if wantMessages}}
@@ -30,12 +29,7 @@ export class {{ properCase name }} extends React.{{{ component }}} { // eslint-d
     return (
       <div>
       {{#if wantHeaders}}
-        <Helmet
-          title="{{properCase name}}"
-          meta={{curly true}}[
-            {{curly true}} name: 'description', content: 'Description of {{properCase name}}' {{curly}},
-          ]{{curly}}
-        />
+        <Helmet title="{{properCase name}}" />
       {{/if}}
       {{#if wantMessages}}
         <FormattedMessage {...messages.header} />
@@ -46,7 +40,7 @@ export class {{ properCase name }} extends React.{{{ component }}} { // eslint-d
 }
 
 {{#if wantActionsAndReducer}}
-const mapStateToProps = createStructuredSelector(makeSelect{{properCase name}}());
+const mapStateToProps = makeSelect{{properCase name}}();
 {{/if}}
 
 function mapDispatchToProps(dispatch) {
