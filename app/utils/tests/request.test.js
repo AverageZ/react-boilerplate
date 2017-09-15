@@ -1,6 +1,6 @@
-/**
- * Test the request function
- */
+/*
+* Test the request function
+*/
 
 import request from '../request';
 

@@ -1,6 +1,6 @@
-/**
- * Test async injectors
- */
+/*
+* Test async injectors
+*/
 
 import { memoryHistory } from 'react-router';
 import { put } from 'redux-saga/effects';

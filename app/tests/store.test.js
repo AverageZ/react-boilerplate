@@ -1,6 +1,6 @@
-/**
- * Test store addons
- */
+/*
+* Test store addons
+*/
 
 import { browserHistory } from 'react-router';
 import configureStore from '../store';
