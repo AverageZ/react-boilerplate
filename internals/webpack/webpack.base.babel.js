@@ -5,18 +5,21 @@
 const path = require('path');
 const webpack = require('webpack');
 
+process.traceDeprecation = true;
+
 module.exports = (options) => ({
   entry: options.entry,
-  output: Object.assign({ // Compile into js/build.js
-    path: path.resolve(process.cwd(), 'build'),
+  output: Object.assign({
+    // Compile into js/dist.js and then the deploy script will mv to build/
+    path: path.resolve(process.cwd(), 'dist'),
     publicPath: '/',
   }, options.output), // Merge with env dependent settings
   module: {
     loaders: [{
       test: /\.js$/, // Transform all .js files required somewhere with Babel
       loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: options.babelQuery,
+      exclude: [/node_modules/, /ckeditor/],
+      // query: options.babelQuery,
     }, {
       // Do not transform vendor's CSS with CSS-modules
       // The point is that they remain in global scope.
@@ -72,9 +75,12 @@ module.exports = (options) => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        BUILD_TARGET: JSON.stringify(process.env.BUILD_TARGET),
       },
     }),
     new webpack.NamedModulesPlugin(),
+
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ]),
   resolve: {
     modules: ['app', 'node_modules'],
@@ -88,6 +94,7 @@ module.exports = (options) => ({
       'jsnext:main',
       'main',
     ],
+    // alias: { moment: 'moment/moment.js' }, // reference proper moment js
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window

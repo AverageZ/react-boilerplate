@@ -1,4 +1,3 @@
-// Important modules this config uses
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -24,20 +23,34 @@ module.exports = require('./webpack.base.babel')({
       async: true,
     }),
 
+    new webpack.optimize.AggressiveMergingPlugin({
+      moveToParents: true,
+    }),
+
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
+      sourceMap: false,
+    }),
+
     // Minify and optimize the index.html
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       minify: {
-        removeComments: true,
         collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
         keepClosingSlash: true,
-        minifyJS: true,
         minifyCSS: true,
+        minifyJS: true,
         minifyURLs: true,
+        removeComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
       },
       inject: true,
     }),
@@ -51,6 +64,20 @@ module.exports = require('./webpack.base.babel')({
       // No need to cache .htaccess. See http://mxs.is/googmp,
       // this is applied before any match in `caches` section
       excludes: ['.htaccess'],
+
+      updateStrategy: 'changed',
+
+      ServiceWorker: {
+        events: true,
+        navigateFallbackURL: '/',
+      },
+
+      /*
+      * Enables automatic updates of ServiceWorker and AppCache. If set to true,
+      * it uses default interval of 1 hour. We've set it to 2 minutes
+      * Set a number value to have provide custom update interval.
+      */
+      autoUpdate: 1000 * 60 * 2,
 
       caches: {
         main: [':rest:'],
