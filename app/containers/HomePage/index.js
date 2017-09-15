@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'components/Helmet';
-import { createStructuredSelector } from 'reselect';
 import makeSelectHomePage from './selectors';
 
 export class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -19,18 +18,13 @@ export class HomePage extends React.Component { // eslint-disable-line react/pre
   render() {
     return (
       <div>
-        <Helmet
-          title="HomePage"
-          meta={[
-            { name: 'description', content: 'Description of HomePage' },
-          ]}
-        />
+        <Helmet title="HomePage" />
       </div>
     );
   }
 }
 
-const mapStateToProps = createStructuredSelector(makeSelectHomePage());
+const mapStateToProps = makeSelectHomePage();
 
 function mapDispatchToProps(dispatch) {
   return {

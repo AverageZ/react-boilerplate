@@ -16,7 +16,7 @@ import withProgressBar from 'components/ProgressBar';
 export function App(props) {
   return (
     <div>
-      <Helmet defaultTitle="React.js Boilerplate" />
+      <Helmet title="React.js Boilerplate" />
 
       {React.Children.toArray(props.children)}
     </div>
