@@ -127,7 +127,7 @@ module.exports = {
     if (data.wantSagas) {
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/sagas.js',
+        path: '../../app/containers/{{properCase name}}/sagas/index.js',
         templateFile: './container/sagas.js.hbs',
         abortOnFail: true,
       });
