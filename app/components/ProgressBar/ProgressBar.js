@@ -1,10 +1,11 @@
-/**
- *
- * ProgressBar
- *
+/*
+*
+* ProgressBar
+*
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Wrapper from './Wrapper';
 import Percent from './Percent';
 
@@ -57,9 +58,9 @@ class ProgressBar extends React.Component {
   }
 
   increment() {
-    /**
-     * Increment the percent randomly.
-     * Only used when autoIncrement is set to true.
+    /*
+    * Increment the percent randomly.
+    * Only used when autoIncrement is set to true.
     */
     let { percent } = this.state;
     percent += ((Math.random() + 1) - Math.random());
@@ -70,18 +71,19 @@ class ProgressBar extends React.Component {
   }
 
   handleProps(props) {
-    /**
-     * Increment progress bar if auto increment is set to true
-     * and progress percent is less than 99.
+    /*
+    * Increment progress bar if auto increment is set to true
+    * and progress percent is less than 99.
     */
     if (props.autoIncrement && props.percent >= 0 && props.percent < 99) {
       this.interval = setInterval(this.increment, props.intervalTime);
     }
 
-    /**
-     * Reset the progress bar when percent hits 100
-     * For better visual effects, percent is set to 99.9
-     * and then cleared in the callback after some time.
+
+    /*
+    * Reset the progress bar when percent hits 100
+    * For better visual effects, percent is set to 99.9
+    * and then cleared in the callback after some time.
     */
 
     if (props.percent >= 100) {
